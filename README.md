@@ -1,4 +1,5 @@
-# Codepipeline - S3 Static Site
+# AWS DevOps
+### Codepipeline - S3 Static Site
 
 ![Screenshot_2](https://user-images.githubusercontent.com/31915035/196174889-490ef1b3-3b96-4340-8299-f1f5cd29b14b.png)
 
@@ -8,7 +9,7 @@ Source Stage: S3 as source
 
 Deploy Stage: S3
 
-# CodeCommit
+### CodeCommit
 
 Connecting to AWS CodeCommit repositories and pushing content to them.
 
@@ -22,7 +23,7 @@ Deploy Stage: S3
 
 !!!!!!!!!!!!!All the service used MUST be in the same region
 
-# CodeBuild
+### CodeBuild
 
 Providing our build commands to AWS CodeBuild with our source code
 
@@ -47,7 +48,7 @@ Deploy Stage:
 
 ![Screenshot_5](https://user-images.githubusercontent.com/31915035/196175021-2a024948-2489-4c15-8526-9c45bcd996b5.png)
 
-# CodeDeploy
+### CodeDeploy
 
 Deploy to EC2 instance
 
@@ -81,7 +82,7 @@ Streaming Deployment Logs to CloudWatch Logs:
 
 In-Place All-At-Once Deployment is not suitable for PROD env.
 
-# CloudFormation
+### CloudFormation
 
 Defining manual approval actions on our pipelines
 
@@ -106,7 +107,7 @@ Manual approval:
 
 Action Variables:
 
-# ECS
+### ECS
 
 Preparing AWS CodeBuild buildspecs to build Docker images and pushing  them to Docker Hub
 
