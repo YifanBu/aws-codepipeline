@@ -1,6 +1,7 @@
-# Codepipeline - S3 Static Site
+# AWS DevOps
+### Codepipeline - S3 Static Site
 
-![Screenshot_2.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6c0b7123-6dc4-4c00-8a5f-98b6920e3a15/Screenshot_2.png)
+![Screenshot_2](https://user-images.githubusercontent.com/31915035/196174889-490ef1b3-3b96-4340-8299-f1f5cd29b14b.png)
 
 Create and update codepipeline
 
@@ -8,7 +9,7 @@ Source Stage: S3 as source
 
 Deploy Stage: S3
 
-# CodeCommit
+### CodeCommit
 
 Connecting to AWS CodeCommit repositories and pushing content to them.
 
@@ -22,7 +23,7 @@ Deploy Stage: S3
 
 !!!!!!!!!!!!!All the service used MUST be in the same region
 
-# CodeBuild
+### CodeBuild
 
 Providing our build commands to AWS CodeBuild with our source code
 
@@ -36,17 +37,18 @@ CodePipeline: MyAngularPipeline
 
 S3: my-angular-website
 
-![Screenshot_3.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7ef6ab04-c138-4da5-8034-c00162541e7b/Screenshot_3.png)
+![Screenshot_3](https://user-images.githubusercontent.com/31915035/196174971-64654a1f-40b1-4675-b327-4942e52fd71a.png)
 
 CodeBuild: MyAngularBuild
 
-![Screenshot_4.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/82dafdb1-4b4c-44e7-b6fb-2fa8b20325ce/Screenshot_4.png)
+![Screenshot_4](https://user-images.githubusercontent.com/31915035/196175002-edd85846-87d9-4402-861f-83e8172f5545.png)
+
 
 Deploy Stage:
 
-![Screenshot_5.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a63723d2-3ffb-4c34-8efd-c09957187e1f/Screenshot_5.png)
+![Screenshot_5](https://user-images.githubusercontent.com/31915035/196175021-2a024948-2489-4c15-8526-9c45bcd996b5.png)
 
-# CodeDeploy
+### CodeDeploy
 
 Deploy to EC2 instance
 
@@ -56,13 +58,13 @@ Create an IAM service role for CodeDeploy: AWSCodeDeployRole → CodeDeployEC2Se
 
 CodeDeploy Deployment group:
 
-![Screenshot_6.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/35daff48-2ade-48a3-a793-277b6a312551/Screenshot_6.png)
+![Screenshot_6](https://user-images.githubusercontent.com/31915035/196175069-13e28ba0-afa5-4212-97a5-2a81697bc3ba.png)
 
 Add CodeDeploy Deploy Action to Pipeline
 
 Creating an [appspec.yml](https://github.com/YifanBu/aws-codepipeline/blob/a875f98a89dba13c17a81f0aae07d93b62e5ac9a/my-angular-project/appspec.yml) File for Deployments to EC2 Instance
 
-![Screenshot_7.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/971366ce-8d65-488c-8077-dce558c29f60/Screenshot_7.png)
+![Screenshot_7](https://user-images.githubusercontent.com/31915035/196175104-5d2e913c-ea2d-454e-a5f0-e78894bc025d.png)
 
 Deployment lifecycle events for debugging
 
@@ -72,11 +74,11 @@ Deployment Logs on EC2:
 
 Streaming Deployment Logs to CloudWatch Logs: 
 
-![Screenshot_8.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/feeb65bf-66cb-4631-a2c6-d55696234452/Screenshot_8.png)
+![Screenshot_8](https://user-images.githubusercontent.com/31915035/196175140-5f1245fc-7860-4b7f-bb60-76018d2bee34.png)
 
 ### Creating a Deployment Group With Auto Scaling and Load Balancing
 
-![Screenshot_9.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0c631c0a-3bbb-484c-bb7a-83f665b5b312/Screenshot_9.png)
+![Screenshot_9](https://user-images.githubusercontent.com/31915035/196175180-6a02a023-32f3-48da-9541-e4ec987027e1.png)
 
 In-Place All-At-Once Deployment is not suitable for PROD env.
 
@@ -101,7 +103,7 @@ SNS Topic
 
 Manual approval:
 
-![Screenshot_11.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b9406052-5770-4c52-990f-09507c96e000/Screenshot_11.png)
+![Screenshot_11](https://user-images.githubusercontent.com/31915035/196175286-4ecdf8fb-9d48-492f-b548-ae243df20b91.png)
 
 Action Variables:
 
@@ -196,9 +198,11 @@ Listener -> Create new listener -> Target group: Create new target group -> name
 
 ![Screenshot_19.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7cc1ed37-119d-4463-8a5c-690a3343e448/Screenshot_19.png)
 
-Create a new Security Group for ALB
+`ECR_IMAGE_URI="${ECR_MAIN_URI}/${ECR_REPO_NAME}:{CODEBUILD_RESOLVED_SOURCE_VERSION:0:8}"`
+### 12. Amazon ECR Public Gallery
 
-[https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/default-custom-security-groups.html](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/default-custom-security-groups.html)
+Using Amazon ECR Public Gallery to pull official Docker images instead of Docker Hub while creating your Docker images with AWS CodeBuild.
+### 13. Enable Automated Rollbacks on ECS Rolling Deployments
 
 ![Screenshot_20.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9414ea1f-0443-473c-ab8f-c531acd28fdc/Screenshot_20.png)
 
