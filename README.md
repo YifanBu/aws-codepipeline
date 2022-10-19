@@ -60,7 +60,7 @@ CodeDeploy Deployment group:
 
 Add CodeDeploy Deploy Action to Pipeline
 
-Creating an Appspec File for Deployments to EC2 Instance
+Creating an [appspec.yml](https://github.com/YifanBu/aws-codepipeline/blob/a875f98a89dba13c17a81f0aae07d93b62e5ac9a/my-angular-project/appspec.yml) File for Deployments to EC2 Instance
 
 ![Screenshot_7.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/971366ce-8d65-488c-8077-dce558c29f60/Screenshot_7.png)
 
@@ -80,7 +80,7 @@ Streaming Deployment Logs to CloudWatch Logs:
 
 In-Place All-At-Once Deployment is not suitable for PROD env.
 
-# CloudFormation
+# 5. CloudFormation
 
 Defining manual approval actions on our pipelines
 
@@ -105,65 +105,47 @@ Manual approval:
 
 Action Variables:
 
-# ECS
+# 6. ECS
 
-Preparing AWS CodeBuild buildspecs to build Docker images and pushing  them to Docker Hub
+### 1. Preparing AWS CodeBuild buildspec file to build Docker images and pushing them to Docker Hub
 
-Defining  environment  variables on CodePipeline and  CodeBuild  to store Docker  Hub credentials and other data
+[my-angular-project-ecs/buildspec.yml](https://github.com/YifanBu/aws-codepipeline/blob/a875f98a89dba13c17a81f0aae07d93b62e5ac9a/my-angular-project-ecs/buildspec.yml)
 
-Building a pipeline on AWS CodePipeline to build  and push your  Docker images  using  AWS CodeCommit  and  AWS CodeBuild
+### 2.Building a pipeline on AWS CodePipeline to build  and push your  Docker images  using  AWS CodeCommit  and  AWS CodeBuild
 
-Using AWS Secrets Manager  with AWS CodeBuild  to store your  Docker Hub credentials as environment variables.
+CodeCommit:
+Create repository -> MyAngularDockerRepo
 
-Using AWS System Parameter Store environment variables on AWS CodeBuild as a free alternative.
+CodePipeline:
+Pipeline name -> MyAngularDockerPipeline
+Source -> CodeCommit, Repository name -> MyAngularDockerRepo, Branch name -> Master
 
-Pushing your Docker image built with AWS Pipeline  and AWS CodeBuild  to Amazon ECR
+CodeBuild:
+Build provider -> CodeBuild
+Project name -> MyDockerBuild
+Build type -> Single build
 
-ECS task definition, ECS cluster with Fargate and ASG, ECS with rolling deployments
+### 3. Defining  environment  variables on CodePipeline and  CodeBuild  to store Docker  Hub credentials and other data
+CodeBuild:
+Environment variables -> DOCKERHUB_TOKEN, DOCKERHUB_USER
 
-ECS standard deploy action
-
-Tagging Docker images built by your pipeline with Git commit IDs on AWS CodeCommit that created them.
-
-Using ECR Public Gallery to pull offical Docker images
-
-### DockerHub Credential
-
-`docker login -u ivanbuau`
-
-dckr_pat_iMNPqEkEhIhMLdEuRrM9ZdP9OHE
-
-### Secret Manager
+### 4. Using AWS Secrets Manager  with AWS CodeBuild  to store your  Docker Hub credentials as environment variables.
 
 ![Screenshot_12.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3dd811b1-9d1d-41ff-8a27-0ddd4ac827fd/Screenshot_12.png)
 
 ![Screenshot_13.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/fc5efc5b-5f2d-4ca0-87b4-e73e48fdcd7f/Screenshot_13.png)
 
-buildspec.yml
-
-```yaml
-env:
-  secrets-manager:
-    DOCKERHUB_TOKEN: dockerhub:token
-    DOCKERHUB_USER: dockerhub:user
-```
-
-### Parameter Store
+### 5. Using AWS System Parameter Store environment variables on AWS CodeBuild as a free alternative.
 
 ![Screenshot_14.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d97545d5-2f8f-4f8d-8248-d19377a20f86/Screenshot_14.png)
 
 ![Screenshot_15.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/23d74e2b-e815-4eda-8dca-e261eb89201a/Screenshot_15.png)
 
-```yaml
-env:
-  parameter-store:
-    DOCKERHUB_TOKEN: /dockerhub/token
-    DOCKERHUB_USER: /dockerhub/user
-```
+### 6. Pushing your Docker image built with AWS Pipeline and AWS CodeBuild to Amazon ECR
+ECR:
+Create repository -> Visibility settings: Private -> Repository name: my-angular-app
 
-### ECR
-
-ECRAccessPolicy
+IAM: ecr-access-policy-for-codebuild.json
 
 ```json
 {
@@ -185,37 +167,32 @@ ECRAccessPolicy
 }
 ```
 
-buildspec.yml
+[codebuild environment variables](https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-env-vars.html)
 
-```yaml
-phases:
-  pre_build:
-    commands:
-      # Docker Hub login
-      - echo ${DOCKERHUB_TOKEN} | docker login -u ${DOCKERHUB_USER} --password-stdin 
-      
-      # ECR login
-      - ECR_MAIN_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
-      - aws ecr get-login-password --region ${AWS_REGION} | docker login -u AWS --password-stdin ${ECR_MAIN_URI}
+CodeBuild:
+Environment variables -> AWS_ACCOUNT_ID
 
-      - ECR_IMAGE_URI="${ECR_MAIN_URI}/${ECR_REPO_NAME}:latest"
-```
+### 7. Create ECS task definition for the Docker images built by your pipeline
 
-### ECS
-
-task definition
-
- 
+ECS:
+Task definition configuration -> Task definition family: my-angular-task-definition
+Container - 1 -> Container details: angular-app -> Image URI
+Environment -> App environment: AWS Fargate, EC2 instances -> OS/Arc: Linux/x86_64
 
 ![Screenshot_17.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ec5bb2e2-9364-4f57-b2be-d66d33d8e4f2/Screenshot_17.png)
 
-Create ECS Cluster
+### 8. Create an ECS cluster with Fargate and ASG capacity providers for hands-on examples
 
 ![Screenshot_16.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e6a231b7-6ee0-4fe7-98fd-a34e64dfb70c/Screenshot_16.png)
 
 ![Screenshot_18.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c8b4357f-c286-428f-b9d6-f0e4dd472ffe/Screenshot_18.png)
 
-Create an ECS Service on Fargate for Rolling Deployments
+### 9. Create ECS service on Fargate for rolling deployments
+
+ECS:
+Deployment options -> Deployment type: Rolling update -> Min running tasks: 100 -> Max running tasks: 200
+Load balancing -> Application Load Balancer: my-rolling-service-alb -> Choose container to load balance: angular-app 80:80
+Listener -> Create new listener -> Target group: Create new target group -> name: my-rolling-service-target-group -> Protocol: HTTP
 
 ![Screenshot_19.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7cc1ed37-119d-4463-8a5c-690a3343e448/Screenshot_19.png)
 
@@ -225,6 +202,24 @@ Create a new Security Group for ALB
 
 ![Screenshot_20.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9414ea1f-0443-473c-ab8f-c531acd28fdc/Screenshot_20.png)
 
-### Pipeline
+### 10. Add an ECS standard deploy action on AWS CodePipeline to perform rolling deployments on your ECS service.
 
-Adding an ECS Standard Deploy Action to your Pipeline
+CodePipeline:
+Add stage: Deploy -> Action name: DeployToECS -> Action provider: Amazon ECS -> Input artifacts: BuildArtifact -> Cluster name: my-cluster -> Service name: my-rolling-service
+
+### 11. Tag your Docker images built by your pipeline with Git commit IDs on AWS CodeCommit that created them.
+
+`ECR_IMAGE_URI="${ECR_MAIN_URI}/${ECR_REPO_NAME}:{CODEBUILD_RESOLVED_SOURCE_VERSION:0:8}"`
+### 12. Amazon ECR Public Gallery
+
+Using Amazon ECR Public Gallery to pull official Docker images instead of Docker Hub while creating your Docker images with AWS CodeBuild.
+### 13. Enable Automated Rollbacks on ECS Rolling Deployments
+
+ECS -> Clusters -> Services:
+Deployment configuration -> Deployment failure detection: Use the Amazon ECS deployment circuit breaker -> Rollback on failures
+
+### 14. Create ECS service on ASG Capacity Providers for rolling deployments
+
+ECS -> Clusters -> Services:
+Compute configuration -> Capacity provider strategy -> Use custom -> Capacity provider: Auto Scaling Group
+Deployment configuration -> Application type: Service
