@@ -1,4 +1,4 @@
-# AWS DevOps
+# All about AWS DevOps
 ### Codepipeline - S3 Static Site
 
 ![Screenshot_2](https://user-images.githubusercontent.com/31915035/196174889-490ef1b3-3b96-4340-8299-f1f5cd29b14b.png)
