@@ -133,15 +133,19 @@ Environment variables -> DOCKERHUB_TOKEN, DOCKERHUB_USER
 
 ### 4. Using AWS Secrets Manager  with AWS CodeBuild  to store your  Docker Hub credentials as environment variables.
 
-![Screenshot_12.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3dd811b1-9d1d-41ff-8a27-0ddd4ac827fd/Screenshot_12.png)
+![Screenshot_12](https://user-images.githubusercontent.com/31915035/198856417-4043fdf8-b937-4b22-a2b5-579ac3f7c76b.png)
 
-![Screenshot_13.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/fc5efc5b-5f2d-4ca0-87b4-e73e48fdcd7f/Screenshot_13.png)
+
+![Screenshot_13](https://user-images.githubusercontent.com/31915035/198856418-337fca3b-9517-4f72-b9a8-921fa60bcb59.png)
+
 
 ### 5. Using AWS System Parameter Store environment variables on AWS CodeBuild as a free alternative.
+![Screenshot_14](https://user-images.githubusercontent.com/31915035/198856423-d4dcfb39-19b0-4b5b-8391-1aa106dc0adc.png)
 
-![Screenshot_14.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d97545d5-2f8f-4f8d-8248-d19377a20f86/Screenshot_14.png)
 
-![Screenshot_15.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/23d74e2b-e815-4eda-8dca-e261eb89201a/Screenshot_15.png)
+![Screenshot_15](https://user-images.githubusercontent.com/31915035/198856426-73bc69ec-cd3a-4e12-bc0e-eaae8f87f5f2.png)
+
+
 
 ### 6. Pushing your Docker image built with AWS Pipeline and AWS CodeBuild to Amazon ECR
 ECR:
@@ -181,13 +185,14 @@ Task definition configuration -> Task definition family: my-angular-task-definit
 Container - 1 -> Container details: angular-app -> Image URI
 Environment -> App environment: AWS Fargate, EC2 instances -> OS/Arc: Linux/x86_64
 
-![Screenshot_17.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ec5bb2e2-9364-4f57-b2be-d66d33d8e4f2/Screenshot_17.png)
+![Screenshot_17](https://user-images.githubusercontent.com/31915035/198856431-43a83f7a-a0a4-462c-86ed-8888ab13e69d.png)
+
 
 ### 8. Create an ECS cluster with Fargate and ASG capacity providers for hands-on examples
 
-![Screenshot_16.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e6a231b7-6ee0-4fe7-98fd-a34e64dfb70c/Screenshot_16.png)
+![Screenshot_16](https://user-images.githubusercontent.com/31915035/198856437-8f09d075-2c58-4693-b0f2-0b5c46ab26d5.png)
 
-![Screenshot_18.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c8b4357f-c286-428f-b9d6-f0e4dd472ffe/Screenshot_18.png)
+![Screenshot_18](https://user-images.githubusercontent.com/31915035/198856439-491c1c19-08f2-4382-b7d8-f6e18230b282.png)
 
 ### 9. Create ECS service on Fargate for rolling deployments
 
@@ -196,15 +201,16 @@ Deployment options -> Deployment type: Rolling update -> Min running tasks: 100 
 Load balancing -> Application Load Balancer: my-rolling-service-alb -> Choose container to load balance: angular-app 80:80
 Listener -> Create new listener -> Target group: Create new target group -> name: my-rolling-service-target-group -> Protocol: HTTP
 
-![Screenshot_19.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7cc1ed37-119d-4463-8a5c-690a3343e448/Screenshot_19.png)
+![Screenshot_19](https://user-images.githubusercontent.com/31915035/198856442-03f2a89f-2651-4c4b-b9ed-4f4405bd960a.png)
 
 `ECR_IMAGE_URI="${ECR_MAIN_URI}/${ECR_REPO_NAME}:{CODEBUILD_RESOLVED_SOURCE_VERSION:0:8}"`
 ### 12. Amazon ECR Public Gallery
 
 Using Amazon ECR Public Gallery to pull official Docker images instead of Docker Hub while creating your Docker images with AWS CodeBuild.
 ### 13. Enable Automated Rollbacks on ECS Rolling Deployments
+![Screenshot_20](https://user-images.githubusercontent.com/31915035/198856448-884fdbf1-921a-49be-a818-292395ef794b.png)
 
-![Screenshot_20.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9414ea1f-0443-473c-ab8f-c531acd28fdc/Screenshot_20.png)
+
 
 ### 10. Add an ECS standard deploy action on AWS CodePipeline to perform rolling deployments on your ECS service.
 
